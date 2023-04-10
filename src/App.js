@@ -10,6 +10,7 @@ import {
   Grid,
   Group,
   Drawer,
+  Indicator,
 } from "@mantine/core";
 import { IconCircleCheck } from "@tabler/icons-react";
 import Card from "./Components/Card";
@@ -83,14 +84,16 @@ function App() {
         </Grid.Col>
 
         <Grid.Col span={2}>
-          <Button
-            onClick={() => setOpened(true)}
-            variant="filled"
-            color="blue"
-            style={{ width: "100%" }}
-          >
-            Sepeti Göster
-          </Button>
+          <Indicator size={20} withBorder color="red" label={basketItems.length !== 0 ? basketItems.length : null}> {/* basketItems.length sıfırdan farklıysa bu değer label'a atanır. Eğer sıfırsa null değeri label'a atanır. */}
+            <Button
+              onClick={() => setOpened(true)}
+              variant="filled"
+              color="blue"
+              style={{ width: "100%" }}
+            >
+              Sepeti Göster
+            </Button>
+          </Indicator>
         </Grid.Col>
       </Grid>
 
@@ -109,7 +112,12 @@ function App() {
         })}
       </SimpleGrid>
 
-      <Drawer opened={opened} onClose={() => setOpened(false)} title="Products" position="right">
+      <Drawer
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title="Products"
+        position="right"
+      >
         <List
           className="list"
           spacing="xs"
