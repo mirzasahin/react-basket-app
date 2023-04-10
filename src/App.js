@@ -74,11 +74,11 @@ function App() {
         <Grid.Col span={2}>
           <Button
             onClick={() => setSearchValue("")}
-            variant="filled"
-            color="blue"
+            variant="light"
+            color="red"
             style={{ width: "100%" }}
           >
-            Sıfırla
+            Temizle
           </Button>
         </Grid.Col>
 
@@ -89,7 +89,7 @@ function App() {
             color="blue"
             style={{ width: "100%" }}
           >
-            Sepet
+            Sepeti Göster
           </Button>
         </Grid.Col>
       </Grid>
@@ -109,7 +109,7 @@ function App() {
         })}
       </SimpleGrid>
 
-      <Drawer opened={opened} onClose={() => setOpened(false)} title="Products">
+      <Drawer opened={opened} onClose={() => setOpened(false)} title="Products" position="right">
         <List
           className="list"
           spacing="xs"
@@ -129,15 +129,15 @@ function App() {
               <List.Item key={index}>{name}</List.Item> // map function'ın ikinci aldığı parametre index no'dur.
             )
           )}
-              <Button
-                style={{ float: 'right' }}
-                mt={20}
-                onClick={() => setBasketItems([])}
-                variant="filled"
-                color="blue"
-              >
-                Sepeti Temizle
-              </Button>
+          <Button
+            style={{ float: "right" }}
+            mt={20}
+            onClick={() => setBasketItems([])}
+            variant="light"
+            color="red"
+          >
+            Sepeti Temizle
+          </Button>
         </List>
       </Drawer>
     </Container>
