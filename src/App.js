@@ -9,6 +9,7 @@ import {
   Button,
   Grid,
   Group,
+  Drawer,
 } from "@mantine/core";
 import { IconCircleCheck } from "@tabler/icons-react";
 import Card from "./Components/Card";
@@ -53,6 +54,7 @@ const storeItems = [
 ];
 
 function App() {
+  let [opened, setOpened] = useState(false);
   let [basketItems, setBasketItems] = useState([]);
   let [searchValue, setSearchValue] = useState("");
   let filteredItems = storeItems.filter(
@@ -61,14 +63,36 @@ function App() {
 
   return (
     <Container>
+      <Grid className="clear">
+        <Grid.Col span={8}>
+          <Input
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            placeholder="Ara"
+          />
+        </Grid.Col>
+        <Grid.Col span={2}>
+          <Button
+            onClick={() => setSearchValue("")}
+            variant="filled"
+            color="blue"
+            style={{ width: "100%" }}
+          >
+            Sıfırla
+          </Button>
+        </Grid.Col>
 
-        <Grid className="clear">
-
-          <Grid.Col span={10}><Input value={searchValue} onChange={(e) => setSearchValue(e.target.value)} placeholder="Ara"/></Grid.Col>
-          <Grid.Col span={2}><Button onClick={() => setSearchValue('')} variant="filled" color="blue" style={{ width: '100%' }}>Sıfırla</Button></Grid.Col>
-    
-        </Grid>
-  
+        <Grid.Col span={2}>
+          <Button
+            onClick={() => setOpened(true)}
+            variant="filled"
+            color="blue"
+            style={{ width: "100%" }}
+          >
+            Sepet
+          </Button>
+        </Grid.Col>
+      </Grid>
 
       <SimpleGrid cols={3} className="store">
         {filteredItems.map(({ name, price, src, description }) => {
@@ -85,26 +109,37 @@ function App() {
         })}
       </SimpleGrid>
 
-      <List
-        className="list"
-        spacing="xs"
-        size="sm"
-        center
-        icon={
-          <ThemeIcon color="teal" size={24} radius="xl">
-            <IconCircleCheck size="1rem" />
-          </ThemeIcon>
-        }
-      >
-        {basketItems.map(
-          (
-            { name },
-            index // aynı itemden birden fazla oluşturulabileceği için key hatası alırız. bu yüzden key=index no yaparız.
-          ) => (
-            <List.Item key={index}>{name}</List.Item> // map function'ın ikinci aldığı parametre index no'dur.
-          )
-        )}
-      </List>
+      <Drawer opened={opened} onClose={() => setOpened(false)} title="Products">
+        <List
+          className="list"
+          spacing="xs"
+          size="sm"
+          center
+          icon={
+            <ThemeIcon color="teal" size={24} radius="xl">
+              <IconCircleCheck size="1rem" />
+            </ThemeIcon>
+          }
+        >
+          {basketItems.map(
+            (
+              { name },
+              index // aynı itemden birden fazla oluşturulabileceği için key hatası alırız. bu yüzden key=index no yaparız.
+            ) => (
+              <List.Item key={index}>{name}</List.Item> // map function'ın ikinci aldığı parametre index no'dur.
+            )
+          )}
+              <Button
+                style={{ float: 'right' }}
+                mt={20}
+                onClick={() => setBasketItems([])}
+                variant="filled"
+                color="blue"
+              >
+                Sepeti Temizle
+              </Button>
+        </List>
+      </Drawer>
     </Container>
   );
 }
