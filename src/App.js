@@ -12,7 +12,7 @@ import {
   Drawer,
   Indicator,
 } from "@mantine/core";
-import { IconCircleCheck } from "@tabler/icons-react";
+import { IconCircleCheck, IconShoppingCart } from "@tabler/icons-react";
 import Card from "./Components/Card";
 import "./App.css";
 
@@ -65,7 +65,7 @@ function App() {
   return (
     <Container>
       <Grid className="clear">
-        <Grid.Col span={8}>
+        <Grid.Col span={9}>
           <Input
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
@@ -74,24 +74,32 @@ function App() {
         </Grid.Col>
         <Grid.Col span={2}>
           <Button
+            p={0}
             onClick={() => setSearchValue("")}
             variant="light"
             color="red"
             style={{ width: "100%" }}
           >
-            Temizle
+            Sonuçları Temizle
           </Button>
         </Grid.Col>
 
-        <Grid.Col span={2}>
-          <Indicator size={20} withBorder color="red" label={basketItems.length !== 0 ? basketItems.length : null}> {/* basketItems.length sıfırdan farklıysa bu değer label'a atanır. Eğer sıfırsa null değeri label'a atanır. */}
+        <Grid.Col span={1}>
+          <Indicator
+            size={20}
+            withBorder
+            color="red"
+            label={basketItems.length !== 0 ? basketItems.length : null}
+          >
+            {" "}
+            {/* basketItems.length sıfırdan farklıysa bu değer label'a atanır. Eğer sıfırsa null değeri label'a atanır. */}
             <Button
               onClick={() => setOpened(true)}
               variant="filled"
               color="blue"
               style={{ width: "100%" }}
             >
-              Sepeti Göster
+                <IconShoppingCart/>
             </Button>
           </Indicator>
         </Grid.Col>
@@ -117,6 +125,7 @@ function App() {
         onClose={() => setOpened(false)}
         title="Products"
         position="right"
+        size="sm"
       >
         <List
           className="list"
