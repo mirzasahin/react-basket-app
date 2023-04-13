@@ -11,6 +11,7 @@ import {
   Group,
   Drawer,
   Indicator,
+  Badge,
 } from "@mantine/core";
 import { IconCircleCheck, IconShoppingCart } from "@tabler/icons-react";
 import Card from "./Components/Card";
@@ -18,6 +19,7 @@ import "./App.css";
 
 const storeItems = [
   {
+    id:101,
     name: "Camera Lens",
     src: "camera-lens.jpg",
     price: "$420",
@@ -25,6 +27,7 @@ const storeItems = [
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
   },
   {
+    id:102,
     name: "DSLR Camera",
     src: "camera.jpg",
     price: "$950",
@@ -32,6 +35,7 @@ const storeItems = [
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
   },
   {
+    id:103,
     name: "Headphones",
     src: "headphones.jpg",
     price: "$45",
@@ -39,6 +43,7 @@ const storeItems = [
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
   },
   {
+    id:104,
     name: "Shoes",
     src: "shoes.jpg",
     price: "$95",
@@ -46,6 +51,7 @@ const storeItems = [
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
   },
   {
+    id:105,
     name: "Watch",
     src: "watch.jpg",
     price: "$200",
@@ -53,14 +59,32 @@ const storeItems = [
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
   },
 ];
+let totalBasketItems = 0;
 
 function App() {
   let [opened, setOpened] = useState(false);
   let [basketItems, setBasketItems] = useState([]);
   let [searchValue, setSearchValue] = useState("");
+  // let [totalBasketItems, setTotalBasketItems] = useState(0)
   let filteredItems = storeItems.filter(
     (item) => item.name.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0
   );
+
+
+  let addToBasket = ({name, id}) => {
+    let basketIndex = basketItems.findIndex(item => item.id === id);
+    totalBasketItems++
+
+    if(basketIndex >= 0){
+      let _basketItems = [...basketItems]
+      _basketItems[basketIndex].counter += 1;
+
+      setBasketItems(_basketItems)
+    }else{
+      setBasketItems([...basketItems, { name: name, id: id, counter: 1 }])
+    }
+
+  }
 
   return (
     <Container>
@@ -89,7 +113,7 @@ function App() {
             size={20}
             withBorder
             color="red"
-            label={basketItems.length !== 0 ? basketItems.length : null}
+            label={totalBasketItems !== 0 ? totalBasketItems : null}
           >
             {" "}
             {/* basketItems.length sıfırdan farklıysa bu değer label'a atanır. Eğer sıfırsa null değeri label'a atanır. */}
@@ -106,7 +130,7 @@ function App() {
       </Grid>
 
       <SimpleGrid cols={3} className="store">
-        {filteredItems.map(({ name, price, src, description }) => {
+        {filteredItems.map(({ name, price, src, description, id}) => {
           return (
             <Card
               key={name}
@@ -114,7 +138,7 @@ function App() {
               price={price}
               src={src}
               description={description}
-              onAdd={() => setBasketItems([...basketItems, { name }])}
+              onAdd={() => addToBasket({name:name, id:id })}
             />
           );
         })}
@@ -140,16 +164,17 @@ function App() {
         >
           {basketItems.map(
             (
-              { name },
+              { name, counter },
               index // aynı itemden birden fazla oluşturulabileceği için key hatası alırız. bu yüzden key=index no yaparız.
             ) => (
-              <List.Item key={index}>{name}</List.Item> // map function'ın ikinci aldığı parametre index no'dur.
+              <List.Item key={index}> <Group> {name} <Badge color="orange">{counter}</Badge></Group></List.Item> // map function'ın ikinci aldığı parametre index no'dur.
             )
           )}
           <Button
             style={{ float: "right" }}
-            mt={20}
-            onClick={() => setBasketItems([])}
+            mt={20} 
+            onClick={() =>{ setBasketItems([])
+            totalBasketItems = 0}}
             variant="light"
             color="red"
           >
